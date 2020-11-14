@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
@@ -10,10 +11,13 @@ namespace UMDataManagement
         /// holds data path 
         /// </summary>
         private string persistentDataPath;
-
+        SurrogateSelector surrogateSelector;
         public BinaryDataSaver(string path = "")
         {
             persistentDataPath = string.IsNullOrEmpty(path) ? Application.persistentDataPath : path;
+            Vector3SerializationSurrogate vector3SS = new Vector3SerializationSurrogate();
+            surrogateSelector=new SurrogateSelector();
+            surrogateSelector.AddSurrogate(typeof(Vector3), new StreamingContext(StreamingContextStates.All), vector3SS);
         }
 
         /// <summary>
@@ -30,6 +34,7 @@ namespace UMDataManagement
                 using (var stream = new FileStream($"{persistentDataPath}/{key}.data", FileMode.Open))
                 {
                     var formatter = new BinaryFormatter();
+                    formatter.SurrogateSelector = surrogateSelector;
                     dataObject = (T) formatter.Deserialize(stream);
                     return true;
                 }
@@ -61,6 +66,7 @@ namespace UMDataManagement
             using (var stream = new FileStream($"{persistentDataPath}/{key}.data", FileMode.Open))
             {
                 var formatter = new BinaryFormatter();
+                formatter.SurrogateSelector = surrogateSelector;
                 return (T) formatter.Deserialize(stream);
             }
         }
@@ -70,8 +76,33 @@ namespace UMDataManagement
             using (var stream = new FileStream($"{persistentDataPath}/{key}.data", FileMode.Create))
             {
                 var formatter = new BinaryFormatter();
+                formatter.SurrogateSelector = surrogateSelector;
                 formatter.Serialize(stream, dataObject);
             }
         }
+    }
+
+
+    public class Vector3SerializationSurrogate : ISerializationSurrogate
+    {
+
+        public void GetObjectData(object obj, SerializationInfo info, StreamingContext context)
+        {
+            Vector3 v3 = (Vector3)obj;
+            info.AddValue("x", v3.x);
+            info.AddValue("y", v3.y);
+            info.AddValue("z", v3.z);
+        }
+
+        public object SetObjectData(object obj, SerializationInfo info, StreamingContext context, ISurrogateSelector selector)
+        {
+            Vector3 v3 = (Vector3)obj;
+            v3.x = (float)info.GetValue("x", typeof(float));
+            v3.y = (float)info.GetValue("y", typeof(float));
+            v3.z = (float)info.GetValue("z", typeof(float));
+            obj  = v3;
+            return obj;
+        }
+
     }
 }

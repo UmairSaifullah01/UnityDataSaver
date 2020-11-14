@@ -1,126 +1,133 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using UMGS;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
+
 
 namespace UMDataManagement
 {
-    public class DataPersistSystem : Singleton<DataPersistSystem>
+
+
+    public class DataPersistSystem : SingletonPersistent<DataPersistSystem>
     {
+
         private Dictionary<string, object> allData;
         private IDataSaver sdataSaver;
-
-        protected override void Awake()
+        static string key = "gamedata";
+        static bool saved = false;
+        protected override void Awake ()
         {
-            base.Awake();
-            Initialize(true);
-            
+            base.Awake ();
+            Initialize (true);
+            print (Application.persistentDataPath);
+            //     sdataSaver.Delete("UjsavedData");
         }
 
 
         public object this[string key] => allData[key];
 
-        public void Initialize(bool autoLoad)
+        public void Initialize (bool autoLoad)
         {
-            allData = new Dictionary<string, object>();
-            sdataSaver = new BinaryDataSaver();
+            allData = new Dictionary<string, object> ();
+            sdataSaver = new BinaryDataSaver ();
             if (autoLoad)
-                Load();
+                Load ();
         }
 
-        public void Initialize(IDataSaver dataSaver, bool autoLoad)
+        public void Initialize (IDataSaver dataSaver, bool autoLoad)
         {
-            allData = new Dictionary<string, object>();
+            allData = new Dictionary<string, object> ();
             sdataSaver = dataSaver;
             if (autoLoad)
-                Load();
+                Load ();
         }
 
-        public bool CanGet<T>(string key, out T dataObject)
+        public bool CanGet<T> (string key, out T dataObject)
         {
-            if (allData.ContainsKey(key))
+            if (allData.ContainsKey (key))
             {
                 dataObject = (T) allData[key];
                 return true;
             }
             else
             {
-                dataObject = default(T);
+                dataObject = default (T);
                 return false;
             }
         }
 
-        public bool Contains(string key)
+        public bool Contains (string key)
         {
-            return allData.ContainsKey(key);
+            return allData.ContainsKey (key);
         }
 
-        public void Delete(string key)
+        public void Delete (string key)
         {
-            allData.Remove(key);
+            allData.Remove (key);
         }
 
-        public T Get<T>(string key)
+        public T Get<T> (string key)
         {
             return (T) allData[key];
         }
 
-        public void Add<T>(string key, T dataObject)
+        public void Add<T> (string key, T dataObject)
         {
-            if (allData.ContainsKey(key))
+            if (allData.ContainsKey (key))
             {
                 allData[key] = dataObject;
             }
             else
             {
-                allData.Add(key, dataObject);
+                allData.Add (key, dataObject);
             }
         }
 
-        public void Load()
+        public void Load ()
         {
-            if (!sdataSaver.Contains("UjsavedData"))
+            if (!sdataSaver.Contains (key))
                 return;
-
-            List<Entry> serializedData = sdataSaver.Get<List<Entry>>("UjsavedData");
-            foreach (var entry in serializedData)
+            var serializedData = sdataSaver.Get<List<Entry>> (key);
+            foreach (Entry entry in serializedData)
             {
                 allData[entry.Key] = entry.Value;
             }
         }
 
-        private void OnApplicationQuit()
+        private void OnApplicationQuit ()
         {
-            Save();
+            Save ();
         }
 
-        public void Save()
+        public void Save ()
         {
-            List<Entry> serializedData = new List<Entry>(allData.Count);
-
-            foreach (string key in allData.Keys)
-            {
-                serializedData.Add(new Entry(key, allData[key]));
-            }
-
-            sdataSaver.Save("UjsavedData", serializedData);
+            if (saved)
+                return;
+            var serializedData = new List<Entry> (allData.Count);
+            serializedData.AddRange (allData.Keys.Select (key => new Entry (key, allData[key])));
+            sdataSaver.Save (key, serializedData);
+            saved = true;
         }
 
-        [System.Serializable]
-        public class Entry
+
+
+        void OnDisable ()
         {
-            public string Key;
-            public object Value;
-
-            public Entry()
-            {
-            }
-
-            public Entry(string key, object value)
-            {
-                Key = key;
-                Value = value;
-            }
+            Save ();
         }
+#if UNITY_EDITOR
+        [MenuItem ("Tools/DataPersistentSystem/DeleteData")]
+        public static void DeleteAllData ()
+        {
+            File.Delete ($"{Application.persistentDataPath}/{key}.data");
+        }
+#endif
+
     }
+
+
 }

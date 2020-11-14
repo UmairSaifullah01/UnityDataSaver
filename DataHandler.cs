@@ -32,6 +32,8 @@ namespace UMDataManagement
         /// <returns>Return true if it finds data</returns>
         public static bool CanGet<T> (string key, out T dataObject)
         {
+            if (!isInitialized)
+                Initialize ();
             return sdataSaver.CanGet (key, out dataObject);
         }
         /// <summary>
@@ -41,6 +43,8 @@ namespace UMDataManagement
         /// <returns></returns>
         public static bool Contains (string key)
         {
+            if (!isInitialized)
+                Initialize ();
             return sdataSaver.Contains (key);
         }
         /// <summary>
@@ -49,6 +53,8 @@ namespace UMDataManagement
         /// <param name="key"></param>
         public static void Delete (string key)
         {
+            if (!isInitialized)
+                Initialize ();
             sdataSaver.Delete (key);
         }
         /// <summary>
@@ -59,6 +65,8 @@ namespace UMDataManagement
         /// <returns></returns>
         public static T Get<T> (string key)
         {
+            if (!isInitialized)
+                Initialize ();
             return sdataSaver.Get<T> (key);
         }
         /// <summary>
@@ -69,6 +77,8 @@ namespace UMDataManagement
         /// <typeparam name="T"></typeparam>
         public static void Save<T> (string key, T dataObject)
         {
+            if (!isInitialized)
+                Initialize ();
             sdataSaver.Save (key, dataObject);
         }
     }

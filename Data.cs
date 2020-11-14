@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+
 
 namespace UMDataManagement
 {
@@ -89,5 +91,13 @@ namespace UMDataManagement
         {
             this.values = values;
         }
+    }
+    [Serializable]
+    public class CustomDictionary<T,T1> : Data
+    {
+
+        public T key;
+        public T1 value;
+
     }
 }
