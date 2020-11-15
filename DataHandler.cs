@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UMDataManagement
+namespace GameDevUtils.DataManagement
 {
     public static class DataHandler
     {

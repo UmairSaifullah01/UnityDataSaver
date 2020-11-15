@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace UMDataManagement
+namespace GameDevUtils.DataManagement
 {
     [Serializable]
     public class Data

@@ -1,4 +1,4 @@
-﻿namespace UMDataManagement
+﻿namespace GameDevUtils.DataManagement
 {
     public interface IDataSaver
     {

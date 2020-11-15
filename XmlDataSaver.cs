@@ -2,7 +2,7 @@
 using System.Xml.Serialization;
 using UnityEngine;
 
-namespace UMDataManagement
+namespace GameDevUtils.DataManagement
 {
     /// <summary>
     /// XmlDataSaver = Simple data presister to file type .xml

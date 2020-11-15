@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace UMDataManagement
+namespace GameDevUtils.DataManagement
 {
 	public class DataEntity : MonoBehaviour, IDataEntity
 	{

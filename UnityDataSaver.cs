@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-namespace UMDataManagement
+namespace GameDevUtils.DataManagement
 {
 
 

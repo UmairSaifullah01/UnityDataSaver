@@ -3,7 +3,7 @@ using System.Linq;
 using UnityEngine;
 
 
-namespace UMDataManagement
+namespace GameDevUtils.DataManagement
 {
 
 

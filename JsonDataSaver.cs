@@ -1,9 +1,9 @@
 ﻿using System.IO;
-using UMDataManagement;
+using GameDevUtils.DataManagement;
 using UnityEngine;
 
 
-namespace UMDataManagement
+namespace GameDevUtils.DataManagement
 {
 
 
