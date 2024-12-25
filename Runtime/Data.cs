@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 
 
-namespace GameDevUtils.DataManagement
+namespace THEBADDEST.DataManagement
 {
     [Serializable]
     public class Data
@@ -93,7 +92,7 @@ namespace GameDevUtils.DataManagement
         }
     }
     [Serializable]
-    public class CustomDictionary<T,T1> : Data
+    public class KeyValuePair<T,T1> : Data
     {
 
         public T key;

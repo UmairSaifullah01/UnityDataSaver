@@ -1,4 +1,4 @@
-﻿namespace GameDevUtils.DataManagement
+﻿namespace THEBADDEST.DataManagement
 {
     public interface IDataSaver
     {

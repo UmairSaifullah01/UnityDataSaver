@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-namespace GameDevUtils.DataManagement
+namespace THEBADDEST.DataManagement
 {
 
 

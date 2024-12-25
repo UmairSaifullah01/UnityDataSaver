@@ -1,9 +1,9 @@
-﻿namespace GameDevUtils.DataManagement
+﻿namespace THEBADDEST.DataManagement
 {
 	public interface IDataEntity
 	{
 
-		string key { get;}
+		string Key { get;}
 
 		void SaveData(Data data);
 
