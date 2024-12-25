@@ -1,0 +1,14 @@
+{
+    "name": "THEBADDEST.DataManagement",
+    "rootNamespace": "THEBADDEST.DataManagement",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -1,0 +1,16 @@
+{
+    "name": "THEBADDEST.DataManagement.Editor",
+    "rootNamespace": "THEBADDEST.DataManagement",
+    "references": [
+        "GUID:4805c15db0d76436fba326281a8ad2e2"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
