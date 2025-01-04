@@ -118,7 +118,19 @@ namespace THEBADDEST.DataManagement
 				return (T)DataDictionary[key];
 			return default(T);
 		}
-
+		/// <summary>
+		/// Get Data of DataElement
+		/// </summary>
+		/// <param name="dataElement"></param>
+		public static void Get(IDataElement dataElement)
+		{
+			if (!isInitialized)
+				Initialize();
+			Data data = Get<Data>(dataElement.dataTag);
+			dataElement.LoadData(data);
+			if (data == null)
+				Debug.Log("Data not found");
+		}
 		/// <summary>
 		/// Used to saved data by key 
 		/// </summary>
@@ -132,6 +144,16 @@ namespace THEBADDEST.DataManagement
 			DataDictionary[key] = dataObject;
 		}
 
+		/// <summary>
+		/// Save Data of IDataElement 
+		/// </summary>
+		/// <param name="dataElement"></param>
+		public static void Save(IDataElement dataElement)
+		{
+			if (!isInitialized)
+				Initialize();
+			Save(dataElement.dataTag, dataElement.SaveData());
+		}
         /// <summary>
         /// Serializes the current data in the DataDictionary and saves it to a file using the dataSaver.
         /// </summary>
@@ -139,8 +161,10 @@ namespace THEBADDEST.DataManagement
         /// Converts each key-value pair in the DataDictionary into an Entry object and stores them in a list.
         /// The list is then saved to a file identified by GameKey.
         /// </remarks>
-		public static void SaveToFile()
+		public static void Persist()
 		{
+			if(!isInitialized)
+				Initialize();
 			var serializedData = new List<Entry>(DataDictionary.Count);
 			serializedData.AddRange(DataDictionary.Keys.Select(key => new Entry(key, DataDictionary[key])));
 			dataSaver.Save(GameKey, serializedData);
@@ -191,6 +215,5 @@ namespace THEBADDEST.DataManagement
 		}
 
 	}
-
-
+	
 }
