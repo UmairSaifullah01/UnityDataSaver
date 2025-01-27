@@ -12,7 +12,7 @@ namespace THEBADDEST.DataManagement
 	public static class DataPersistor
 	{
 
-		private static readonly string GameKey = "gamedata";
+		private static  string GameKey = "gamedata";
 
 		private static readonly Dictionary<string, object> DataDictionary = new Dictionary<string, object>();
 
@@ -27,6 +27,7 @@ namespace THEBADDEST.DataManagement
 			Debug.Log($"Data Initialized with BinaryDataSaver {Application.persistentDataPath}");
 			var path = Application.persistentDataPath;
 			var settings      = Resources.Load<DataPersistorSettings>("DataPersistorSettings");
+			GameKey = settings.GameKey;
 			switch (settings.dataSaverType)
 			{
 				case "BinaryDataSaver":
@@ -190,7 +191,10 @@ namespace THEBADDEST.DataManagement
 		[MenuItem ("Tools/THEBADDEST/DataManagement/DeleteData")]
 		public static void DeleteAllData ()
 		{
-			dataSaver = new BinaryDataSaver();
+			if(!isInitialized)
+				Initialize();
+			DataDictionary.Clear();
+			Persist();
 			dataSaver.Delete(GameKey);
 			Debug.Log("Data Deleted");
 		}
